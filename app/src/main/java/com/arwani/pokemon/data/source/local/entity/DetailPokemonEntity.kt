@@ -31,7 +31,9 @@ data class DetailPokemonEntity(
     @ColumnInfo(name = "pokedex_id")
     val pokedexId: String,
     @ColumnInfo(name = "catch")
-    var catch: String = ""
+    var catch: String = "",
+    @ColumnInfo(name = "count_catch")
+    var countCatch: Int = 0
 )
 
 

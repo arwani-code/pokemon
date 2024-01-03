@@ -20,6 +20,9 @@ interface PokemonDao {
     @Query("SELECT * FROM detail_pokemon where id = :pokeId")
     fun getDetailPokemon(pokeId: Int): Flow<List<DetailPokemonEntity>>
 
+    @Query("SELECT * FROM detail_pokemon WHERE catch IS NOT NULL AND catch <> ''")
+    fun getMyPokemon(): Flow<List<DetailPokemonEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPokemon(data: List<PokemonEntity>)
 
@@ -29,7 +32,5 @@ interface PokemonDao {
     @Update
     fun updateNamePokemon(data: DetailPokemonEntity)
 
-//
-//    @Query("UPDATE detail_pokemon SET name = :nameField and catch = :catchPokemon WHERE id = :pokemonId")
-//    fun updateNamePokemon(nameField: String, pokemonId: Int, catchPokemon: Boolean)
+
 }

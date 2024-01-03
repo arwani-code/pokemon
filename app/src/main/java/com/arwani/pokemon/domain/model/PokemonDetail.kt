@@ -16,5 +16,6 @@ data class PokemonDetail(
     val types: List<String>,
     val weight: String,
     val pokedexId: String,
-    val catch: String
+    val catch: String,
+    var countCatch: Int
 )

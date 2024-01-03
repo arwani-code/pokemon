@@ -5,4 +5,5 @@ sealed class Screen(val route: String) {
     data object Detail : Screen("home/{pokemon}") {
         fun createRoute(pokemon: Int) = "home/$pokemon"
     }
+    data object MyPokemon : Screen("my_pokemon")
 }

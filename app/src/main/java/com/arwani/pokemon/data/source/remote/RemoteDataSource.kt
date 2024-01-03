@@ -1,6 +1,5 @@
-package com.arwani.pokemon.data.source
+package com.arwani.pokemon.data.source.remote
 
-import android.util.Log
 import com.arwani.pokemon.data.source.remote.network.ApiResponse
 import com.arwani.pokemon.data.source.remote.network.ApiService
 import com.arwani.pokemon.data.source.remote.response.PokemonDetailResponse

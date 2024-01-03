@@ -1,6 +1,5 @@
 package com.arwani.pokemon.data.source.local
 
-import android.util.Log
 import com.arwani.pokemon.data.helper.SortType
 import com.arwani.pokemon.data.helper.SortUtils
 import com.arwani.pokemon.data.source.local.entity.DetailPokemonEntity
@@ -21,13 +20,16 @@ class LocalDataSource @Inject constructor(private val pokemonDao: PokemonDao) {
 
     fun getDetailPokemon(id: Int): Flow<List<DetailPokemonEntity>> = pokemonDao.getDetailPokemon(id)
 
+    fun getMyPokemon(): Flow<List<DetailPokemonEntity>> = pokemonDao.getMyPokemon()
+
     suspend fun insertPokemon(data: List<PokemonEntity>) = pokemonDao.insertPokemon(data)
 
     suspend fun insertDetailPokemon(data: List<DetailPokemonEntity>) =
         pokemonDao.insertDetailPokemon(data.first())
 
-    fun updateNamePokemon(data: DetailPokemonEntity, catch: Int) {
+    fun updateNamePokemon(data: DetailPokemonEntity, catch: Int, countCatch: Int) {
         data.catch = catch.toString()
+        data.countCatch = countCatch
         pokemonDao.updateNamePokemon(data)
     }
 }

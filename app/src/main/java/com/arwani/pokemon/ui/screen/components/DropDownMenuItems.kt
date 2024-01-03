@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DropDownMenuItems(
     isUpdateItem: (String) -> Unit,
-    options: List<String> = listOf("A-Z", "Z-A", "Random")
+    options: List<String> = listOf("A-Z", "Z-A")
 ) {
     var expanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()

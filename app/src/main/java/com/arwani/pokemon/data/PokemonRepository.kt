@@ -3,8 +3,9 @@ package com.arwani.pokemon.data
 import com.arwani.pokemon.data.helper.DataMapper
 import com.arwani.pokemon.data.helper.NetworkBoundUiResult
 import com.arwani.pokemon.data.helper.SortType
-import com.arwani.pokemon.data.source.RemoteDataSource
 import com.arwani.pokemon.data.source.local.LocalDataSource
+import com.arwani.pokemon.data.source.local.entity.DetailPokemonEntity
+import com.arwani.pokemon.data.source.remote.RemoteDataSource
 import com.arwani.pokemon.data.source.remote.network.ApiResponse
 import com.arwani.pokemon.data.source.remote.response.PokemonDetailResponse
 import com.arwani.pokemon.data.source.remote.response.PokemonResponse
@@ -63,10 +64,12 @@ class PokemonRepository @Inject constructor(
             }
         }.asFlow()
 
-    override fun updateNamePokemon(data: PokemonDetail, catch: Int) {
+    override fun updateNamePokemon(data: PokemonDetail, catch: Int, countCatch: Int) {
         val pokemonDetail = DataMapper.mapDomainToEntity(data)
         appExecutors.diskIO().execute {
-            localDataSource.updateNamePokemon(pokemonDetail, catch)
+            localDataSource.updateNamePokemon(pokemonDetail, catch, countCatch = countCatch)
         }
     }
+
+    override fun getMyPokemon(): Flow<List<DetailPokemonEntity>> = localDataSource.getMyPokemon()
 }

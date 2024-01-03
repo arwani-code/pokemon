@@ -70,7 +70,8 @@ object DataMapper {
                 weight = input.weight,
                 height = input.height,
                 pokedexId = input.pokedexId,
-                catch =  input.catch
+                catch =  input.catch,
+                countCatch = input.countCatch
             )
         }
     }

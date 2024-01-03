@@ -1,7 +1,7 @@
 package com.arwani.pokemon.ui.screen.detail
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.arwani.pokemon.domain.model.PokemonDetail
@@ -14,14 +14,17 @@ class DetailViewModel @Inject constructor(
     private val useCase: PokemonUseCase
 ) : ViewModel() {
 
-    private var catch by mutableIntStateOf(0)
+    var pokedexId by mutableStateOf("")
+
+//    var catch by mutableIntStateOf(0)
+    var getCatch by mutableStateOf(false)
 
     fun getPokemonDetail(id: Int) = useCase.getPokemonDetail(id)
 
-    fun addNumberCatch(pokemon: PokemonDetail?) {
+    fun addNumberCatch(pokemon: PokemonDetail?, catch: Int) {
         if (pokemon != null) {
-            useCase.updateNamePokemon(pokemon, calculatePokemonCatch(catch))
-            catch += 1
+            useCase.updateNamePokemon(pokemon, calculatePokemonCatch(catch), catch)
+//            catch += 1
         }
     }
 

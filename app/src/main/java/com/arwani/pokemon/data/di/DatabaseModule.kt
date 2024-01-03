@@ -22,7 +22,7 @@ class DatabaseModule {
     fun provideDatabase(@ApplicationContext context: Context): PokemonDatabase =
         Room.databaseBuilder(
             context,
-            PokemonDatabase::class.java, "Movie.db"
+            PokemonDatabase::class.java, "Pokemon.db"
         ).fallbackToDestructiveMigration().build()
 
 

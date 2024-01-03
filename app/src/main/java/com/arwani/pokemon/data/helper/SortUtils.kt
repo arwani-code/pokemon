@@ -16,9 +16,7 @@ object SortUtils {
                 simpleQuery.append("ORDER BY name DESC")
             }
 
-            SortType.RANDOM -> {
-                simpleQuery.append("ORDER BY RANDOM()")
-            }
+            SortType.RANDOM -> {}
         }
         return SimpleSQLiteQuery(simpleQuery.toString())
     }
