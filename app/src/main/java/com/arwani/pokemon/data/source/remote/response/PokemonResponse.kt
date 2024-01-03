@@ -7,3 +7,12 @@ data class PokemonResponse(
     @SerializedName("results")
     val results: List<Result>
 )
+
+
+data class Result(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("url")
+    val url: String
+)
+

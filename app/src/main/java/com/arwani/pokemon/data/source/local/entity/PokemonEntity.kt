@@ -13,4 +13,7 @@ data class PokemonEntity(
 
     @ColumnInfo(name = "name")
     val name: String,
+
+    @ColumnInfo(name = "imageUrl")
+    val imageUrl: String,
 )
