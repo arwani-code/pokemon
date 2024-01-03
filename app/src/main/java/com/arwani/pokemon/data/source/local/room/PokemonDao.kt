@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RawQuery
+import androidx.room.Update
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.arwani.pokemon.data.source.local.entity.DetailPokemonEntity
 import com.arwani.pokemon.data.source.local.entity.PokemonEntity
@@ -24,4 +25,11 @@ interface PokemonDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDetailPokemon(data: DetailPokemonEntity)
+
+    @Update
+    fun updateNamePokemon(data: DetailPokemonEntity)
+
+//
+//    @Query("UPDATE detail_pokemon SET name = :nameField and catch = :catchPokemon WHERE id = :pokemonId")
+//    fun updateNamePokemon(nameField: String, pokemonId: Int, catchPokemon: Boolean)
 }

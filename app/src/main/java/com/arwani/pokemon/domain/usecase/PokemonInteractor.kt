@@ -17,4 +17,8 @@ class PokemonInteractor @Inject constructor(
 
     override fun getPokemonDetail(id: Int): Flow<UiResult<List<PokemonDetail>>> =
         iPokemonRepository.getPokemonDetail(id)
+
+    override fun updateNamePokemon(data: PokemonDetail, catch: Int) {
+        iPokemonRepository.updateNamePokemon(data, catch)
+    }
 }

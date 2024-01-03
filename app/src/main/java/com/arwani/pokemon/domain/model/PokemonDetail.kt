@@ -14,5 +14,7 @@ data class PokemonDetail(
     val sprites: String,
     val stats: List<StatName>,
     val types: List<String>,
-    val weight: String
+    val weight: String,
+    val pokedexId: String,
+    val catch: String
 )

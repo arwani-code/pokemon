@@ -5,11 +5,10 @@ import com.arwani.pokemon.data.helper.NetworkBoundUiResult
 import com.arwani.pokemon.data.helper.SortType
 import com.arwani.pokemon.data.source.RemoteDataSource
 import com.arwani.pokemon.data.source.local.LocalDataSource
-import com.arwani.pokemon.data.source.local.room.PokemonDao
 import com.arwani.pokemon.data.source.remote.network.ApiResponse
-import com.arwani.pokemon.data.source.remote.network.ApiService
 import com.arwani.pokemon.data.source.remote.response.PokemonDetailResponse
 import com.arwani.pokemon.data.source.remote.response.PokemonResponse
+import com.arwani.pokemon.data.utils.AppExecutors
 import com.arwani.pokemon.domain.model.Pokemon
 import com.arwani.pokemon.domain.model.PokemonDetail
 import com.arwani.pokemon.domain.repository.IPokemonRepository
@@ -22,7 +21,8 @@ import javax.inject.Singleton
 @Singleton
 class PokemonRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val appExecutors: AppExecutors
 ) : IPokemonRepository {
 
     override fun getPokemon(sortType: SortType): Flow<UiResult<List<Pokemon>>> =
@@ -44,7 +44,7 @@ class PokemonRepository @Inject constructor(
             }
         }.asFlow()
 
-        override fun getPokemonDetail(id: Int): Flow<UiResult<List<PokemonDetail>>> =
+    override fun getPokemonDetail(id: Int): Flow<UiResult<List<PokemonDetail>>> =
         object : NetworkBoundUiResult<List<PokemonDetail>, PokemonDetailResponse>() {
             override fun loadFromDB(): Flow<List<PokemonDetail>> =
                 localDataSource.getDetailPokemon(id).map {
@@ -62,4 +62,11 @@ class PokemonRepository @Inject constructor(
                 localDataSource.insertDetailPokemon(input)
             }
         }.asFlow()
+
+    override fun updateNamePokemon(data: PokemonDetail, catch: Int) {
+        val pokemonDetail = DataMapper.mapDomainToEntity(data)
+        appExecutors.diskIO().execute {
+            localDataSource.updateNamePokemon(pokemonDetail, catch)
+        }
+    }
 }

@@ -3,7 +3,6 @@ package com.arwani.pokemon.data.source.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.arwani.pokemon.data.source.remote.response.Sprites
 
 
 @Entity(tableName = "detail_pokemon")
@@ -18,7 +17,7 @@ data class DetailPokemonEntity(
     @ColumnInfo(name = "moves")
     val moves: List<String>,
     @ColumnInfo(name = "name")
-    val name: String,
+    var name: String,
     @ColumnInfo(name = "order")
     val order: Int,
     @ColumnInfo(name = "sprites")
@@ -28,7 +27,11 @@ data class DetailPokemonEntity(
     @ColumnInfo(name = "types")
     val types: List<String>,
     @ColumnInfo(name = "weight")
-    val weight: String
+    val weight: String,
+    @ColumnInfo(name = "pokedex_id")
+    val pokedexId: String,
+    @ColumnInfo(name = "catch")
+    var catch: String = ""
 )
 
 

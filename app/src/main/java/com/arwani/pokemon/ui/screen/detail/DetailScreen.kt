@@ -1,17 +1,13 @@
 package com.arwani.pokemon.ui.screen.detail
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.arwani.pokemon.data.UiResult
-import com.arwani.pokemon.ui.screen.components.DropDownMenuItems
 import com.arwani.pokemon.ui.screen.components.PokemonTopAppBar
 
 @Composable
@@ -43,12 +38,7 @@ fun DetailScreen(
         mutableStateOf(false)
     }
     val pokemon by viewModel.getPokemonDetail(id).collectAsState(initial = UiResult.Loading())
-    LaunchedEffect(key1 = catch, block = {
-        if (catch) {
-            viewModel.addNumberCatch()
-            Toast.makeText(context, "catch....", Toast.LENGTH_LONG).show()
-        }
-    })
+
     Scaffold(
         topBar = {
             PokemonTopAppBar(
@@ -77,13 +67,24 @@ fun DetailScreen(
                 }
 
                 is UiResult.Success -> {
+                    val pokemonDetail = pokemon.data?.first()
+                    LaunchedEffect(key1 = catch, block = {
+                        if (catch) {
+                            viewModel.addNumberCatch(pokemonDetail)
+                            Toast.makeText(context, "catch....", Toast.LENGTH_LONG).show()
+                        }
+                    })
+//                    LaunchedEffect(key1 = pokemonDetail, block = {
+//                        viewModel.assignCatch(pokemonDetail?.catch)
+//                    })
                     Column(
                         modifier = modifier.fillMaxSize()
                     ) {
-                        Text(text = pokemon.data?.first()?.name.toString())
-                        Text(text = pokemon.data?.first()?.height.toString())
-                        Text(text = pokemon.data?.first()?.weight.toString())
-                        Text(text = pokemon.data?.first()?.abilities.toString())
+                        if (pokemonDetail?.catch?.isEmpty() == true) Text(text = pokemonDetail.name)
+                        else Text(text = "${pokemonDetail?.name}-${pokemonDetail?.catch}")
+                        Text(text = pokemonDetail?.height.toString())
+                        Text(text = pokemonDetail?.weight.toString())
+                        Text(text = pokemonDetail?.abilities.toString())
                         Button(onClick = { catch = !catch }) {
                             if (catch) Text(text = "Release")
                             else Text(text = "Catch")

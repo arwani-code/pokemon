@@ -49,8 +49,8 @@ object DataMapper {
                 sprites = input.id.getImageUrl(),
                 stats = input.stats.filter { it.stat.name.isNotEmpty() }
                     .map { StatName(it.baseStat, it.stat.name) },
-                types = input.types.map { it.type.name }
-
+                types = input.types.map { it.type.name },
+                pokedexId = input.id.getIdString()
             )
         )
         return data
@@ -68,8 +68,26 @@ object DataMapper {
                 abilities = input.abilities,
                 name = input.name,
                 weight = input.weight,
-                height = input.height
+                height = input.height,
+                pokedexId = input.pokedexId,
+                catch =  input.catch
             )
         }
     }
+
+    fun mapDomainToEntity(input: PokemonDetail): DetailPokemonEntity =
+        DetailPokemonEntity(
+            id = input.id,
+            pokedexId = input.pokedexId,
+            height = input.height,
+            weight = input.weight,
+            name = input.name,
+            abilities = input.abilities,
+            moves = input.moves,
+            order = input.order,
+            sprites = input.sprites,
+            stats = input.stats,
+            types = input.types,
+            catch = input.catch
+        )
 }

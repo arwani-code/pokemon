@@ -13,4 +13,6 @@ interface PokemonUseCase {
     fun getPokemon(sortType: SortType): Flow<UiResult<List<Pokemon>>>
 
     fun getPokemonDetail(id: Int): Flow<UiResult<List<PokemonDetail>>>
+
+    fun updateNamePokemon(data: PokemonDetail, catch: Int)
 }
