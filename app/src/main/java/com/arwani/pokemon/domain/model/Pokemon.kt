@@ -6,5 +6,6 @@ import androidx.compose.runtime.Immutable
 data class Pokemon(
     val id: String,
     val name: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val catch: String = ""
 )

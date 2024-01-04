@@ -1,14 +1,19 @@
 package com.arwani.pokemon.ui.screen.home
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -25,16 +30,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.arwani.pokemon.R
 import com.arwani.pokemon.data.UiResult
 import com.arwani.pokemon.ui.navigation.Screen
 import com.arwani.pokemon.ui.screen.components.BottomBar
@@ -55,7 +68,8 @@ fun HomeScreen(
     nestedScrollConnection: NestedScrollConnection,
     topBarScrollBehavior: TopAppBarScrollBehavior,
     navController: NavHostController,
-    systemUiController: SystemUiController
+    systemUiController: SystemUiController,
+    context: Context = LocalContext.current
 ) {
     val colorBackground = MaterialTheme.colorScheme.background
     var bottomBarOffsetHeightPx by remember { mutableFloatStateOf(0f) }
@@ -86,6 +100,7 @@ fun HomeScreen(
     })
 
     val pokemon by viewModel.pokemon.collectAsState(initial = UiResult.Loading())
+    val loading by viewModel.loading.collectAsState()
 
     Scaffold(
         topBar = {
@@ -128,6 +143,16 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
+                        if (loading){
+                            item(span = { GridItemSpan(2) }) {
+                                Box(
+                                    modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    LoadingIndicator()
+                                }
+                            }
+                        }
                         items(4) {
                             Box(
                                 modifier
@@ -151,6 +176,16 @@ fun HomeScreen(
                             .fillMaxSize()
                             .nestedScroll(nestedScrollConnection)
                     ) {
+                        if (loading){
+                            item(span = { GridItemSpan(2) }) {
+                                Box(
+                                    modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    LoadingIndicator()
+                                }
+                            }
+                        }
                         if (pokemon != null) {
                             items(pokemon.data!!, key = { it.id }) {
                                 CardItem(
@@ -164,9 +199,29 @@ fun HomeScreen(
                     }
                 }
 
-                is UiResult.Error -> {}
+                is UiResult.Error -> {
+                    Toast.makeText(context, "Oops, something went wrong", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
     }
+}
+
+@Composable
+private fun LoadingIndicator(
+    modifier: Modifier = Modifier,
+) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.refresh_loader))
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+    )
+
+    LottieAnimation(
+        modifier = modifier.size(100.dp),
+        composition = composition,
+        progress = { progress },
+        alignment = Alignment.Center
+    )
 }

@@ -15,8 +15,7 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     var pokedexId by mutableStateOf("")
-
-//    var catch by mutableIntStateOf(0)
+    var fab by mutableStateOf(false)
     var getCatch by mutableStateOf(false)
 
     fun getPokemonDetail(id: Int) = useCase.getPokemonDetail(id)

@@ -71,5 +71,6 @@ class PokemonRepository @Inject constructor(
         }
     }
 
-    override fun getMyPokemon(): Flow<List<DetailPokemonEntity>> = localDataSource.getMyPokemon()
+    override fun getMyPokemon(): Flow<List<DetailPokemonEntity>> =
+        localDataSource.getMyPokemon()
 }

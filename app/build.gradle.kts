@@ -93,4 +93,6 @@ dependencies {
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    implementation("com.airbnb.android:lottie-compose:5.2.0")
 }

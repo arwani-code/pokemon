@@ -91,4 +91,14 @@ object DataMapper {
             types = input.types,
             catch = input.catch
         )
+
+    fun mapEntitiesToDomainMyPokemon(inputData: List<DetailPokemonEntity>) : List<Pokemon> =
+        inputData.map {
+            Pokemon(
+                id = it.id.toString(),
+                name = it.name,
+                imageUrl = it.sprites,
+                catch = it.catch
+            )
+        }
 }
