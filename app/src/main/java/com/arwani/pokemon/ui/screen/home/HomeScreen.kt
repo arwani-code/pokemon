@@ -3,6 +3,7 @@ package com.arwani.pokemon.ui.screen.home
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,14 +35,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -49,6 +53,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.arwani.pokemon.R
 import com.arwani.pokemon.data.UiResult
+import com.arwani.pokemon.domain.model.Pokemon
 import com.arwani.pokemon.ui.navigation.Screen
 import com.arwani.pokemon.ui.screen.components.BottomBar
 import com.arwani.pokemon.ui.screen.components.CardItem
@@ -143,7 +148,7 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        if (loading){
+                        if (loading) {
                             item(span = { GridItemSpan(2) }) {
                                 Box(
                                     modifier.fillMaxWidth(),
@@ -166,36 +171,15 @@ fun HomeScreen(
                 }
 
                 is UiResult.Success -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        state = lazyGridState,
-                        modifier = modifier
-                            .fillMaxSize()
-                            .nestedScroll(nestedScrollConnection)
-                    ) {
-                        if (loading){
-                            item(span = { GridItemSpan(2) }) {
-                                Box(
-                                    modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    LoadingIndicator()
-                                }
-                            }
-                        }
-                        if (pokemon != null) {
-                            items(pokemon.data!!, key = { it.id }) {
-                                CardItem(
-                                    id = it.id.toInt(),
-                                    title = it.name,
-                                    imageUrl = it.imageUrl,
-                                    navigateItem = navigateToDetail
-                                )
-                            }
-                        }
+                    val dataItems = pokemon.data
+                    if (dataItems != null) {
+                        MainContent(
+                            lazyGridState = lazyGridState,
+                            nestedScrollConnection = nestedScrollConnection,
+                            loading = loading,
+                            navigateToDetail = navigateToDetail,
+                            pokemon = dataItems
+                        )
                     }
                 }
 
@@ -205,6 +189,75 @@ fun HomeScreen(
             }
         }
 
+    }
+}
+
+@Composable
+private fun MainContent(
+    modifier: Modifier = Modifier,
+    lazyGridState: LazyGridState,
+    nestedScrollConnection: NestedScrollConnection,
+    loading: Boolean,
+    navigateToDetail: (Int) -> Unit,
+    pokemon: List<Pokemon>
+) {
+    Box(modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+        Image(
+            painter = rememberAsyncImagePainter(model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/40.png"),
+            contentDescription = "",
+            modifier = modifier
+                .fillMaxWidth()
+                .height(250.dp)
+                .graphicsLayer {
+                    alpha =
+                        if (lazyGridState.firstVisibleItemScrollOffset < 500 && lazyGridState.firstVisibleItemIndex == 0) 120f / lazyGridState.firstVisibleItemScrollOffset else 0.5f
+                    translationY =
+                        if (lazyGridState.firstVisibleItemScrollOffset < 100 && lazyGridState.firstVisibleItemIndex == 0) 0f - lazyGridState.firstVisibleItemScrollOffset else -180f
+                },
+            contentScale = ContentScale.Crop,
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            state = lazyGridState,
+            modifier = modifier
+                .fillMaxSize()
+                .nestedScroll(nestedScrollConnection)
+        ) {
+            if (loading) {
+                item(span = { GridItemSpan(2) }) {
+                    Box(
+                        modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingIndicator()
+                    }
+                }
+            }
+            if (!loading) {
+                item(span = { GridItemSpan(2) }) {
+                    Box(
+                        modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Box(
+                            modifier = modifier
+                                .height(100.dp)
+                        )
+                    }
+                }
+            }
+            items(pokemon, key = { it.id }) {
+                CardItem(
+                    id = it.id.toInt(),
+                    title = it.name,
+                    imageUrl = it.imageUrl,
+                    navigateItem = navigateToDetail
+                )
+            }
+        }
     }
 }
 

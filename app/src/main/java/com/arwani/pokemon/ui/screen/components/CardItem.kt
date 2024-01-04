@@ -1,6 +1,7 @@
 package com.arwani.pokemon.ui.screen.components
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,8 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil.compose.rememberAsyncImagePainter
 import com.arwani.pokemon.ui.theme.Green20
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,11 +46,8 @@ fun CardItem(
                     .fillMaxSize()
                     .padding(vertical = 12.dp)
             ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .crossfade(true)
-                        .build(),
+                Image(
+                    painter = rememberAsyncImagePainter(imageUrl),
                     contentDescription = title,
                     contentScale = ContentScale.FillBounds,
                     modifier = modifier

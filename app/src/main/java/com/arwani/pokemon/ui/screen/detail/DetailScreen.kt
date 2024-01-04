@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -57,8 +58,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil.compose.rememberAsyncImagePainter
 import com.arwani.pokemon.data.UiResult
 import com.arwani.pokemon.data.utils.parseStatToAbbr
 import com.arwani.pokemon.data.utils.parseStatToColor
@@ -177,11 +177,8 @@ fun DetailScreen(
                                     .background(Red20),
                                 contentAlignment = Alignment.Center
                             ) {
-                                AsyncImage(
-                                    model = ImageRequest.Builder(context)
-                                        .data(pokemonDetail.sprites)
-                                        .crossfade(true)
-                                        .build(),
+                                Image(
+                                    painter = rememberAsyncImagePainter(pokemonDetail.sprites),
                                     contentDescription = pokemonDetail.sprites,
                                     contentScale = ContentScale.FillBounds,
                                     modifier = modifier
@@ -197,7 +194,7 @@ fun DetailScreen(
                             ) {
                                 if (pokemonDetail.catch.isEmpty()) {
                                     Text(
-                                        text = pokemonDetail.name.toString(),
+                                        text = pokemonDetail.name,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 48.sp
                                     )
