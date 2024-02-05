@@ -202,20 +202,20 @@ private fun MainContent(
     pokemon: List<Pokemon>
 ) {
     Box(modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-        Image(
-            painter = rememberAsyncImagePainter(model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/40.png"),
-            contentDescription = "",
-            modifier = modifier
-                .fillMaxWidth()
-                .height(250.dp)
-                .graphicsLayer {
-                    alpha =
-                        if (lazyGridState.firstVisibleItemScrollOffset < 500 && lazyGridState.firstVisibleItemIndex == 0) 120f / lazyGridState.firstVisibleItemScrollOffset else 0.5f
-                    translationY =
-                        if (lazyGridState.firstVisibleItemScrollOffset < 100 && lazyGridState.firstVisibleItemIndex == 0) 0f - lazyGridState.firstVisibleItemScrollOffset else -180f
-                },
-            contentScale = ContentScale.Crop,
-        )
+//        Image(
+//            painter = rememberAsyncImagePainter(model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/40.png"),
+//            contentDescription = "",
+//            modifier = modifier
+//                .fillMaxWidth()
+//                .height(250.dp)
+//                .graphicsLayer {
+//                    alpha =
+//                        if (lazyGridState.firstVisibleItemScrollOffset < 500 && lazyGridState.firstVisibleItemIndex == 0) 120f / lazyGridState.firstVisibleItemScrollOffset else 0.5f
+//                    translationY =
+//                        if (lazyGridState.firstVisibleItemScrollOffset < 100 && lazyGridState.firstVisibleItemIndex == 0) 0f - lazyGridState.firstVisibleItemScrollOffset else -180f
+//                },
+//            contentScale = ContentScale.Crop,
+//        )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
@@ -226,16 +226,16 @@ private fun MainContent(
                 .fillMaxSize()
                 .nestedScroll(nestedScrollConnection)
         ) {
-            if (loading) {
-                item(span = { GridItemSpan(2) }) {
-                    Box(
-                        modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        LoadingIndicator()
-                    }
-                }
-            }
+//            if (loading) {
+//                item(span = { GridItemSpan(2) }) {
+//                    Box(
+//                        modifier.fillMaxWidth(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        LoadingIndicator()
+//                    }
+//                }
+//            }
             if (!loading) {
                 item(span = { GridItemSpan(2) }) {
                     Box(
